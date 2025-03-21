@@ -1,0 +1,1535 @@
+<!DOCTYPE html><html lang="en"><head><meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' 'unsafe-eval' data: blob: https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://code.jquery.com https://unpkg.com https://d3js.org https://threejs.org https://cdn.plot.ly https://stackpath.bootstrapcdn.com https://maps.googleapis.com https://cdn.tailwindcss.com https://ajax.googleapis.com https://kit.fontawesome.com https://cdn.datatables.net https://maxcdn.bootstrapcdn.com https://code.highcharts.com https://tako-static-assets-production.s3.amazonaws.com https://www.youtube.com https://fonts.googleapis.com https://fonts.gstatic.com https://pfst.cf2.poecdn.net https://puc.poecdn.net https://i.imgur.com https://wikimedia.org https://*.icons8.com https://*.giphy.com https://picsum.photos https://images.unsplash.com; frame-src 'self' https://www.youtube.com https://trytako.com; child-src 'self'; manifest-src 'self'; worker-src 'self'; upgrade-insecure-requests; block-all-mixed-content;">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>不规则动词黄金矿工</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&family=ZCOOL+KuaiLe&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Poppins', 'ZCOOL KuaiLe', sans-serif;
+            background: linear-gradient(135deg, #693D3D, #8B5A2B);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #693D3D;
+        }
+        
+        .game-container {
+            position: relative;
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: linear-gradient(to bottom, #D2B48C, #B8860B);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3), inset 0 0 50px rgba(255,255,255,0.2);
+            overflow: hidden;
+            border: 8px solid #B8860B;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: linear-gradient(to right, #B8860B, #D2B48C);
+            padding: 15px;
+            text-align: center;
+            border-bottom: 4px dashed #693D3D;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        h1 {
+            color: #693D3D;
+            font-size: 2.4rem;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2), 0 0 10px rgba(255,255,255,0.5);
+            display: inline-block;
+        }
+        
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            background: linear-gradient(to right, #693D3D, #8B5A2B);
+            color: white;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            margin: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        .stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .stat i {
+            font-size: 1.4rem;
+        }
+        
+        .mine-field {
+            position: relative;
+            flex-grow: 1;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200"><rect width="200" height="200" fill="%23D2B48C"/><circle cx="20" cy="20" r="5" fill="%23B8860B"/><circle cx="60" cy="20" r="5" fill="%23B8860B"/><circle cx="100" cy="20" r="5" fill="%23B8860B"/><circle cx="140" cy="20" r="5" fill="%23B8860B"/><circle cx="180" cy="20" r="5" fill="%23B8860B"/><circle cx="40" cy="40" r="5" fill="%23B8860B"/><circle cx="80" cy="40" r="5" fill="%23B8860B"/><circle cx="120" cy="40" r="5" fill="%23B8860B"/><circle cx="160" cy="40" r="5" fill="%23B8860B"/><circle cx="20" cy="60" r="5" fill="%23B8860B"/><circle cx="60" cy="60" r="5" fill="%23B8860B"/><circle cx="100" cy="60" r="5" fill="%23B8860B"/><circle cx="140" cy="60" r="5" fill="%23B8860B"/><circle cx="180" cy="60" r="5" fill="%23B8860B"/><circle cx="40" cy="80" r="5" fill="%23B8860B"/><circle cx="80" cy="80" r="5" fill="%23B8860B"/><circle cx="120" cy="80" r="5" fill="%23B8860B"/><circle cx="160" cy="80" r="5" fill="%23B8860B"/><circle cx="20" cy="100" r="5" fill="%23B8860B"/><circle cx="60" cy="100" r="5" fill="%23B8860B"/><circle cx="100" cy="100" r="5" fill="%23B8860B"/><circle cx="140" cy="100" r="5" fill="%23B8860B"/><circle cx="180" cy="100" r="5" fill="%23B8860B"/></svg>');
+            overflow: hidden;
+            margin: 10px;
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+        
+        .miner {
+            position: absolute;
+            width: 80px;
+            height: 100px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 140"><path d="M60,15 C72,15 84,26 84,44 C84,62 72,78 60,78 C48,78 36,62 36,44 C36,26 48,15 60,15 Z" fill="%23D2B48C"/><circle cx="48" cy="44" r="6" fill="%23693D3D"/><circle cx="72" cy="44" r="6" fill="%23693D3D"/><path d="M48,58 C54,65 66,65 72,58" stroke="%23693D3D" stroke-width="3" fill="none"/><path d="M42,20 C36,14 30,20 30,26 C30,32 42,38 42,20 Z" fill="%23693D3D"/><path d="M78,20 C84,14 90,20 90,26 C90,32 78,38 78,20 Z" fill="%23693D3D"/><path d="M36,78 L36,108 C36,120 84,120 84,108 L84,78 C78,84 72,86 60,86 C48,86 42,84 36,78 Z" fill="%23B8860B"/><rect x="54" y="86" width="12" height="24" fill="%23D2B48C"/><path d="M30,44 L12,50 L12,62 L30,56 Z" fill="%23D2B48C"/><path d="M90,44 L108,50 L108,62 L90,56 Z" fill="%23D2B48C"/><rect x="36" y="108" width="48" height="12" fill="%23693D3D"/><rect x="48" y="120" width="10" height="18" fill="%23B8860B"/><rect x="62" y="120" width="10" height="18" fill="%23B8860B"/><circle cx="60" cy="15" r="15" fill="%23B8860B"/></svg>');
+            background-repeat: no-repeat;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+        
+        .claw {
+            position: absolute;
+            width: 6px;
+            height: 0;
+            background: #5D4037;
+            left: 50%;
+            bottom: 100px;
+            transform-origin: bottom center;
+            transform: translateX(-50%);
+            z-index: 90;
+        }
+        
+        .claw::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            background: #5D4037;
+            border-radius: 50% 50% 0 0;
+            bottom: -1px;
+            left: -9px;
+        }
+        
+        .gold-nugget {
+            position: absolute;
+            width: 140px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-weight: bold;
+            cursor: pointer;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140 70"><path d="M20,20 C10,25 10,45 30,50 C50,55 90,55 110,50 C130,45 130,25 120,20 C100,15 40,15 20,20 Z" fill="%23B8860B"/><path d="M30,25 C25,28 25,42 40,45 C55,48 85,48 100,45 C115,42 115,28 110,25 C95,22 45,22 30,25 Z" fill="%23D4AF37"/><circle cx="100" cy="35" r="5" fill="%23FFD700"/><circle cx="40" cy="35" r="3" fill="%23FFD700"/><circle cx="70" cy="40" r="4" fill="%23FFD700"/></svg>');
+            background-repeat: no-repeat;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.7);
+            transition: transform 0.3s, filter 0.3s;
+            filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.7));
+            z-index: 10;
+            font-size: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .gold-nugget:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px rgba(255, 215, 0, 1));
+        }
+        
+        .gold-nugget.shake {
+            animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+        }
+        
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
+            40%, 60% { transform: translate3d(4px, 0, 0); }
+        }
+        
+        .gold-nugget.correct {
+            filter: drop-shadow(0 0 20px rgba(0, 255, 0, 0.7));
+        }
+        
+        .gold-nugget.wrong {
+            filter: drop-shadow(0 0 20px rgba(255, 0, 0, 0.7));
+        }
+        
+        .gold-nugget span {
+            background-color: rgba(105, 61, 61, 0.7);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 20px;
+            max-width: 85%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .question-panel {
+            background: linear-gradient(to right, #B8860B, #D2B48C);
+            padding: 15px;
+            text-align: center;
+            border-top: 4px dashed #693D3D;
+            box-shadow: 0 -4px 8px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .current-verb {
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #693D3D;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .current-verb::before, .current-verb::after {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.8rem;
+        }
+        
+        .current-verb::before {
+            left: -35px;
+        }
+        
+        .current-verb::after {
+            right: -35px;
+        }
+        
+        .button-container {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        
+        .game-btn {
+            padding: 10px 20px;
+            background: linear-gradient(to bottom, #B8860B, #693D3D);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2), inset 0 0 10px rgba(255,255,255,0.2);
+        }
+        
+        .game-btn:hover {
+            transform: scale(1.05) translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.3), inset 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        .game-btn:active {
+            transform: scale(0.98) translateY(1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 0 10px rgba(255,255,255,0.1);
+        }
+        
+        .home-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(210, 180, 140, 0.95), rgba(184, 134, 11, 0.95));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 30px;
+            text-align: center;
+            color: #693D3D;
+        }
+        
+        .home-screen h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .home-screen p {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            max-width: 700px;
+        }
+        
+        .mode-selection {
+            display: flex;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .mode-card {
+            width: 280px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border: 3px solid #693D3D;
+        }
+        
+        .mode-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 24px rgba(0,0,0,0.3);
+        }
+        
+        .mode-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #693D3D;
+        }
+        
+        .mode-card p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .mode-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            color: #693D3D;
+        }
+        
+        .custom-mode-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(210, 180, 140, 0.95), rgba(184, 134, 11, 0.95));
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 30px;
+            text-align: center;
+            color: #693D3D;
+        }
+        
+        .custom-mode-screen h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .custom-input-area {
+            width: 80%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+        
+        .custom-input-area p {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+        }
+        
+        .file-upload {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .file-upload-btn {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            cursor: pointer;
+        }
+        
+        .file-upload-btn input[type=file] {
+            position: absolute;
+            top: 0;
+            right: 0;
+            min-width: 100%;
+            min-height: 100%;
+            font-size: 100px;
+            text-align: right;
+            filter: alpha(opacity=0);
+            opacity: 0;
+            outline: none;
+            background: white;
+            cursor: inherit;
+            display: block;
+        }
+        
+        .manual-input {
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .manual-input textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            font-size: 1.2rem;
+            border-radius: 10px;
+            border: 2px solid #693D3D;
+            margin-bottom: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .table-preview {
+            width: 100%;
+            margin-top: 20px;
+            max-height: 200px;
+            overflow-y: auto;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .table-preview table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .table-preview th, .table-preview td {
+            padding: 10px;
+            border: 1px solid #693D3D;
+            text-align: left;
+        }
+        
+        .table-preview th {
+            background-color: rgba(105, 61, 61, 0.2);
+            font-weight: bold;
+        }
+        
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: #693D3D;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: background 0.3s;
+        }
+        
+        .back-button:hover {
+            background: #8B5A2B;
+        }
+        
+        .celebration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+        
+        .confetti {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background: linear-gradient(135deg, #B8860B, #D4AF37);
+            border-radius: 50%;
+            animation: confetti-fall 3s forwards;
+        }
+        
+        @keyframes confetti-fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        .emoji {
+            position: absolute;
+            font-size: 3rem;
+            animation: float 3s infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-30px); }
+        }
+        
+        .grab {
+            animation: grab 1s forwards;
+        }
+        
+        @keyframes grab {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(var(--grabX), var(--grabY)) scale(0.5); opacity: 0; }
+        }
+        
+        .level-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(rgba(210, 180, 140, 0.95), rgba(184, 134, 11, 0.95));
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 3000;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 5px solid #693D3D;
+        }
+        
+        .level-message h2 {
+            color: #693D3D;
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .result-message {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(rgba(210, 180, 140, 0.95), rgba(184, 134, 11, 0.95));
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            z-index: 3000;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+            border: 5px solid #693D3D;
+        }
+        
+        .result-message h2 {
+            color: #693D3D;
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        
+        .result-message p {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #693D3D;
+        }
+        
+        .sparkle {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50"><path d="M25,0 L30,20 L50,25 L30,30 L25,50 L20,30 L0,25 L20,20 Z" fill="%23FFD700"/></svg>');
+            background-repeat: no-repeat;
+            background-size: contain;
+            pointer-events: none;
+            animation: sparkle 2s infinite;
+        }
+        
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+        
+        .progress-bar {
+            height: 20px;
+            width: 100%;
+            background-color: rgba(105, 61, 61, 0.3);
+            border-radius: 15px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background: linear-gradient(to right, #693D3D, #B8860B, #D4AF37);
+            width: 0%;
+            transition: width 0.3s;
+            border-radius: 15px;
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .game-stats {
+                font-size: 1rem;
+                flex-wrap: wrap;
+            }
+            
+            .gold-nugget {
+                width: 120px;
+                height: 60px;
+            }
+            
+            .gold-nugget span {
+                font-size: 16px;
+                padding: 6px 12px;
+            }
+            
+            .current-verb {
+                font-size: 1.8rem;
+            }
+            
+            .current-verb::before, .current-verb::after {
+                font-size: 1.4rem;
+            }
+            
+            .current-verb::before {
+                left: -25px;
+            }
+            
+            .current-verb::after {
+                right: -25px;
+            }
+            
+            .game-btn {
+                font-size: 1.1rem;
+                padding: 8px 16px;
+            }
+            
+            .home-screen h2 {
+                font-size: 2rem;
+            }
+            
+            .home-screen p {
+                font-size: 1.1rem;
+            }
+            
+            .mode-card {
+                width: 220px;
+            }
+            
+            .mode-card h3 {
+                font-size: 1.4rem;
+            }
+            
+            .mode-card p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <div class="header">
+            <h1>✨ 不规则动词黄金矿工 ✨</h1>
+        </div>
+        
+        <div class="game-stats">
+            <div class="stat">
+                <i>🏆</i> 得分: <span id="score">0</span>
+            </div>
+            <div class="stat">
+                <i>⏱️</i> 时间: <span id="time">60</span> 秒
+            </div>
+            <div class="stat">
+                <i>🌟</i> 等级: <span id="level">1</span>
+            </div>
+            <div class="stat">
+                <i>🎯</i> 正确: <span id="correct">0</span>/<span id="total">0</span>
+            </div>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress" id="progress"></div>
+        </div>
+        
+        <div class="mine-field" id="mineField">
+            <div class="miner" id="miner"></div>
+            <div class="claw" id="claw"></div>
+            <!-- Gold nuggets will be added here dynamically -->
+        </div>
+        
+        <div class="question-panel">
+            <div class="current-verb">选择 "<span id="currentVerb">begin</span>" 的过去分词</div>
+            
+            <div class="button-container">
+                <button class="game-btn" id="startBtn">开始游戏</button>
+                <button class="game-btn" id="nextBtn" style="display: none;">下一组</button>
+                <button class="game-btn" id="resetBtn" style="display: none;">重新开始</button>
+            </div>
+        </div>
+        
+        <!-- Home screen -->
+        <div class="home-screen" id="homeScreen">
+            <h2>✨ 不规则动词黄金矿工 ✨</h2>
+            <p>挑战你的英语不规则动词知识，在矿场中找到正确的过去分词金块！</p>
+            
+            <div class="mode-selection">
+                <div class="mode-card" id="randomModeCard">
+                    <div class="mode-icon">🎲</div>
+                    <h3>随机模式</h3>
+                    <p>挑战100个常见不规则动词，测试你的英语知识！</p>
+                    <button class="game-btn">开始游戏</button>
+                </div>
+                
+                <div class="mode-card" id="customModeCard">
+                    <div class="mode-icon">📝</div>
+                    <h3>自定义模式</h3>
+                    <p>导入Excel或自定义动词列表，练习你最需要掌握的动词！</p>
+                    <button class="game-btn">开始游戏</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Custom mode screen -->
+        <div class="custom-mode-screen" id="customModeScreen">
+            <button class="back-button" id="customModeBackBtn">返回</button>
+            
+            <h2>自定义动词列表</h2>
+            
+            <div class="custom-input-area">
+                <p>选择你的Excel文件（第一列为原形，第二列为过去分词）或直接输入：</p>
+                
+                <div class="file-upload">
+                    <div class="file-upload-btn">
+                        <button class="game-btn">选择Excel文件</button>
+                        <input type="file" id="excelFileInput" accept=".xlsx, .xls, .csv">
+                    </div>
+                    <p id="fileStatus">未选择文件</p>
+                </div>
+                
+                <div class="manual-input">
+                    <p>或者直接输入动词列表（每行一个，格式：原形,过去分词）：</p>
+                    <textarea id="manualInput" placeholder="例如：
+go,gone
+see,seen
+take,taken"></textarea>
+                </div>
+                
+                <div class="table-preview" id="tablePreview">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>动词原形</th>
+                                <th>过去分词</th>
+                            </tr>
+                        </thead>
+                        <tbody id="previewTableBody">
+                            <!-- Preview rows will be added here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <button class="game-btn" id="startCustomGameBtn">开始游戏</button>
+        </div>
+    </div>
+    
+    <div class="celebration" id="celebration"></div>
+    
+    <script>
+        // Irregular verbs data with English base form and past participle
+        const irregularVerbs = [
+            {base: "be", pastParticiple: "been"},
+            {base: "beat", pastParticiple: "beaten"},
+            {base: "become", pastParticiple: "become"},
+            {base: "begin", pastParticiple: "begun"},
+            {base: "bend", pastParticiple: "bent"},
+            {base: "bet", pastParticiple: "bet"},
+            {base: "bite", pastParticiple: "bitten"},
+            {base: "blow", pastParticiple: "blown"},
+            {base: "break", pastParticiple: "broken"},
+            {base: "bring", pastParticiple: "brought"},
+            {base: "build", pastParticiple: "built"},
+            {base: "buy", pastParticiple: "bought"},
+            {base: "catch", pastParticiple: "caught"},
+            {base: "choose", pastParticiple: "chosen"},
+            {base: "come", pastParticiple: "come"},
+            {base: "cost", pastParticiple: "cost"},
+            {base: "cut", pastParticiple: "cut"},
+            {base: "deal", pastParticiple: "dealt"},
+            {base: "dig", pastParticiple: "dug"},
+            {base: "do", pastParticiple: "done"},
+            {base: "draw", pastParticiple: "drawn"},
+            {base: "drink", pastParticiple: "drunk"},
+            {base: "drive", pastParticiple: "driven"},
+            {base: "eat", pastParticiple: "eaten"},
+            {base: "fall", pastParticiple: "fallen"},
+            {base: "feed", pastParticiple: "fed"},
+            {base: "feel", pastParticiple: "felt"},
+            {base: "fight", pastParticiple: "fought"},
+            {base: "find", pastParticiple: "found"},
+            {base: "fly", pastParticiple: "flown"},
+            {base: "forget", pastParticiple: "forgotten"},
+            {base: "forgive", pastParticiple: "forgiven"},
+            {base: "freeze", pastParticiple: "frozen"},
+            {base: "get", pastParticiple: "got"},
+            {base: "give", pastParticiple: "given"},
+            {base: "go", pastParticiple: "gone"},
+            {base: "grow", pastParticiple: "grown"},
+            {base: "hang", pastParticiple: "hung"},
+            {base: "have", pastParticiple: "had"},
+            {base: "hear", pastParticiple: "heard"},
+            {base: "hide", pastParticiple: "hidden"},
+            {base: "hit", pastParticiple: "hit"},
+            {base: "hold", pastParticiple: "held"},
+            {base: "hurt", pastParticiple: "hurt"},
+            {base: "keep", pastParticiple: "kept"},
+            {base: "know", pastParticiple: "known"},
+            {base: "lay", pastParticiple: "laid"},
+            {base: "lead", pastParticiple: "led"},
+            {base: "learn", pastParticiple: "learnt"},
+            {base: "leave", pastParticiple: "left"},
+            {base: "lend", pastParticiple: "lent"},
+            {base: "let", pastParticiple: "let"},
+            {base: "lie", pastParticiple: "lain"},
+            {base: "light", pastParticiple: "lit"},
+            {base: "lose", pastParticiple: "lost"},
+            {base: "make", pastParticiple: "made"},
+            {base: "mean", pastParticiple: "meant"},
+            {base: "meet", pastParticiple: "met"},
+            {base: "pay", pastParticiple: "paid"},
+            {base: "put", pastParticiple: "put"},
+            {base: "read", pastParticiple: "read"},
+            {base: "ride", pastParticiple: "ridden"},
+            {base: "ring", pastParticiple: "rung"},
+            {base: "rise", pastParticiple: "risen"},
+            {base: "run", pastParticiple: "run"},
+            {base: "say", pastParticiple: "said"},
+            {base: "see", pastParticiple: "seen"},
+            {base: "sell", pastParticiple: "sold"},
+            {base: "send", pastParticiple: "sent"},
+            {base: "set", pastParticiple: "set"},
+            {base: "shake", pastParticiple: "shaken"},
+            {base: "shine", pastParticiple: "shone"},
+            {base: "shoot", pastParticiple: "shot"},
+            {base: "show", pastParticiple: "shown"},
+            {base: "shut", pastParticiple: "shut"},
+            {base: "sing", pastParticiple: "sung"},
+            {base: "sink", pastParticiple: "sunk"},
+            {base: "sit", pastParticiple: "sat"},
+            {base: "sleep", pastParticiple: "slept"},
+            {base: "speak", pastParticiple: "spoken"},
+            {base: "spend", pastParticiple: "spent"},
+            {base: "stand", pastParticiple: "stood"},
+            {base: "steal", pastParticiple: "stolen"},
+            {base: "stick", pastParticiple: "stuck"},
+            {base: "sting", pastParticiple: "stung"},
+            {base: "strike", pastParticiple: "struck"},
+            {base: "swear", pastParticiple: "sworn"},
+            {base: "sweep", pastParticiple: "swept"},
+            {base: "swim", pastParticiple: "swum"},
+            {base: "swing", pastParticiple: "swung"},
+            {base: "take", pastParticiple: "taken"},
+            {base: "teach", pastParticiple: "taught"},
+            {base: "tear", pastParticiple: "torn"},
+            {base: "tell", pastParticiple: "told"},
+            {base: "think", pastParticiple: "thought"},
+            {base: "throw", pastParticiple: "thrown"},
+            {base: "understand", pastParticiple: "understood"},
+            {base: "wake", pastParticiple: "woken"},
+            {base: "wear", pastParticiple: "worn"},
+            {base: "win", pastParticiple: "won"},
+            {base: "write", pastParticiple: "written"}
+        ];
+        
+        // Group the verbs into sets of 10
+        function groupVerbsIntoSets(verbs) {
+            const sets = [];
+            for (let i = 0; i < verbs.length; i += 10) {
+                sets.push(verbs.slice(i, i + 10));
+            }
+            return sets;
+        }
+        
+        const verbSets = groupVerbsIntoSets([...irregularVerbs]);
+        
+        let score = 0;
+        let level = 1;
+        let timer = 60;
+        let gameInterval = null;
+        let currentVerb = null;
+        let correctPastParticiple = null;
+        let displayedPastParticiples = [];
+        let isGameRunning = false;
+        let correctCount = 0;
+        let totalCount = 0;
+        let currentVerbSetIndex = 0;
+        let usedVerbsInCurrentSet = [];
+        let customVerbs = [];
+        let isCustomMode = false;
+        
+        const mineField = document.getElementById('mineField');
+        const miner = document.getElementById('miner');
+        const claw = document.getElementById('claw');
+        const scoreDisplay = document.getElementById('score');
+        const timeDisplay = document.getElementById('time');
+        const levelDisplay = document.getElementById('level');
+        const correctDisplay = document.getElementById('correct');
+        const totalDisplay = document.getElementById('total');
+        const currentVerbDisplay = document.getElementById('currentVerb');
+        const progressBar = document.getElementById('progress');
+        const startBtn = document.getElementById('startBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const homeScreen = document.getElementById('homeScreen');
+        const customModeScreen = document.getElementById('customModeScreen');
+        const randomModeCard = document.getElementById('randomModeCard');
+        const customModeCard = document.getElementById('customModeCard');
+        const customModeBackBtn = document.getElementById('customModeBackBtn');
+        const excelFileInput = document.getElementById('excelFileInput');
+        const fileStatus = document.getElementById('fileStatus');
+        const manualInput = document.getElementById('manualInput');
+        const previewTableBody = document.getElementById('previewTableBody');
+        const startCustomGameBtn = document.getElementById('startCustomGameBtn');
+        const celebration = document.getElementById('celebration');
+        
+        // Initialize the game in random mode
+        function initializeRandomGame() {
+            homeScreen.style.display = 'none';
+            startBtn.style.display = 'none';
+            nextBtn.style.display = 'inline-block';
+            resetBtn.style.display = 'inline-block';
+            score = 0;
+            level = 1;
+            timer = 60;
+            correctCount = 0;
+            totalCount = 0;
+            currentVerbSetIndex = 0;
+            usedVerbsInCurrentSet = [];
+            isCustomMode = false;
+            
+            scoreDisplay.textContent = score;
+            timeDisplay.textContent = timer;
+            levelDisplay.textContent = level;
+            correctDisplay.textContent = correctCount;
+            totalDisplay.textContent = totalCount;
+            progressBar.style.width = '0%';
+            
+            isGameRunning = true;
+            
+            // Clear existing gold nuggets
+            clearGoldNuggets();
+            
+            // Set up the first round
+            setupRound();
+            
+            // Start the game timer
+            gameInterval = setInterval(updateGameState, 1000);
+            
+            // Add sparkles to the game
+            createSparkles();
+        }
+        
+        // Initialize the game in custom mode
+        function initializeCustomGame() {
+            if (customVerbs.length < 5) {
+                alert("请至少添加5个不规则动词!");
+                return;
+            }
+            
+            customModeScreen.style.display = 'none';
+            startBtn.style.display = 'none';
+            nextBtn.style.display = 'none'; // No next group in custom mode
+            resetBtn.style.display = 'inline-block';
+            score = 0;
+            level = 1;
+            timer = 60;
+            correctCount = 0;
+            totalCount = 0;
+            usedVerbsInCurrentSet = [];
+            isCustomMode = true;
+            
+            scoreDisplay.textContent = score;
+            timeDisplay.textContent = timer;
+            levelDisplay.textContent = level;
+            correctDisplay.textContent = correctCount;
+            totalDisplay.textContent = totalCount;
+            progressBar.style.width = '0%';
+            
+            isGameRunning = true;
+            
+            // Clear existing gold nuggets
+            clearGoldNuggets();
+            
+            // Set up the first round
+            setupRound();
+            
+            // Start the game timer
+            gameInterval = setInterval(updateGameState, 1000);
+            
+            // Add sparkles to the game
+            createSparkles();
+        }
+        
+        // Clear all gold nuggets
+        function clearGoldNuggets() {
+            const nuggets = document.querySelectorAll('.gold-nugget');
+            nuggets.forEach(nugget => nugget.remove());
+        }
+        
+        // Set up a new round
+        function setupRound() {
+            let availableVerbs;
+            
+            if (isCustomMode) {
+                // Use custom verbs
+                availableVerbs = customVerbs.filter(verb => !usedVerbsInCurrentSet.includes(verb.base));
+                
+                if (availableVerbs.length === 0) {
+                    // All custom verbs have been used, start over
+                    usedVerbsInCurrentSet = [];
+                    availableVerbs = [...customVerbs];
+                }
+            } else {
+                // Use predefined verb sets
+                if (usedVerbsInCurrentSet.length === verbSets[currentVerbSetIndex].length) {
+                    // All verbs in the current set have been used, move to next level
+                    levelUp();
+                    return;
+                }
+                
+                // Pick from available verbs in current set
+                availableVerbs = verbSets[currentVerbSetIndex].filter(
+                    verb => !usedVerbsInCurrentSet.includes(verb.base)
+                );
+            }
+            
+            // Clear existing gold nuggets
+            clearGoldNuggets();
+            
+            // Pick a random verb from available verbs
+            const randomIndex = Math.floor(Math.random() * availableVerbs.length);
+            currentVerb = availableVerbs[randomIndex];
+            usedVerbsInCurrentSet.push(currentVerb.base);
+            
+            correctPastParticiple = currentVerb.pastParticiple;
+            currentVerbDisplay.textContent = currentVerb.base;
+            
+            // Generate past participles (9 wrong + 1 correct)
+            displayedPastParticiples = generatePastParticiples();
+            
+            // Create gold nuggets
+            createGoldNuggets();
+            
+            // Update progress
+            if (isCustomMode) {
+                const progress = (usedVerbsInCurrentSet.length / customVerbs.length) * 100;
+                progressBar.style.width = `${progress}%`;
+            } else {
+                const progress = (usedVerbsInCurrentSet.length / verbSets[currentVerbSetIndex].length) * 100;
+                progressBar.style.width = `${progress}%`;
+            }
+        }
+        
+        // Generate past participles (1 correct, others wrong)
+        function generatePastParticiples() {
+            let allPastParticiples;
+            
+            if (isCustomMode) {
+                // For custom mode
+                allPastParticiples = customVerbs.map(v => v.pastParticiple);
+            } else {
+                // For random mode, use the full set of past participles
+                allPastParticiples = irregularVerbs.map(v => v.pastParticiple);
+            }
+            
+            const wrongOptions = allPastParticiples.filter(pp => pp !== correctPastParticiple);
+            
+            // If we don't have enough wrong options, use some filler strings
+            const fillerOptions = [
+                "havened", "goed", "taked", "speaked", "eated", "sleeped", 
+                "writed", "finded", "buyed", "maked", "selled", "gived", 
+                "thinked", "seeing", "breaked", "flyed", "teached"
+            ];
+            
+            // Create a set of potential wrong answers from the available wrong options
+            let selectedWrong = [];
+            
+            // Shuffle wrong options
+            const shuffledWrong = [...wrongOptions].sort(() => 0.5 - Math.random());
+            
+            // Add as many real wrong options as we have available (up to 9)
+            selectedWrong = shuffledWrong.slice(0, Math.min(9, shuffledWrong.length));
+            
+            // If we don't have enough real wrong options, add filler options
+            while (selectedWrong.length < 9) {
+                const filler = fillerOptions[Math.floor(Math.random() * fillerOptions.length)];
+                if (!selectedWrong.includes(filler) && filler !== correctPastParticiple) {
+                    selectedWrong.push(filler);
+                }
+            }
+            
+            // Always ensure we have exactly 10 options (or fewer if we can't get that many)
+            const all = [correctPastParticiple, ...selectedWrong];
+            const desiredCount = Math.min(10, all.length);
+            
+            // Shuffle the options
+            return all.slice(0, desiredCount).sort(() => 0.5 - Math.random());
+        }
+        
+        // Create gold nuggets on the screen
+        function createGoldNuggets() {
+            const fieldWidth = mineField.clientWidth - 160;
+            const fieldHeight = mineField.clientHeight - 80;
+            
+            // Create a grid to place nuggets to avoid overlap
+            const gridSize = 160;
+            const gridRows = Math.ceil(fieldHeight / gridSize);
+            const gridCols = Math.ceil(fieldWidth / gridSize);
+            
+            // Generate positions for the grid
+            const positions = [];
+            for (let row = 0; row < gridRows; row++) {
+                for (let col = 0; col < gridCols; col++) {
+                    positions.push({
+                        x: col * gridSize + Math.random() * 20,
+                        y: row * gridSize + Math.random() * 20 + 60 // Add 60px to keep away from top
+                    });
+                }
+            }
+            
+            // Shuffle positions
+            positions.sort(() => 0.5 - Math.random());
+            
+            // Make sure we have enough positions for all nuggets
+            if (positions.length < displayedPastParticiples.length) {
+                // Add more positions if needed by creating a denser grid
+                const additionalPositions = [];
+                for (let i = 0; i < displayedPastParticiples.length - positions.length; i++) {
+                    additionalPositions.push({
+                        x: Math.random() * fieldWidth,
+                        y: Math.random() * fieldHeight * 0.7 + 60 // Keep away from top and bottom
+                    });
+                }
+                positions.push(...additionalPositions);
+            }
+            
+            // Create gold nuggets for each past participle
+            displayedPastParticiples.forEach((pastParticiple, i) => {
+                if (i < positions.length) {
+                    const nugget = document.createElement('div');
+                    nugget.className = 'gold-nugget';
+                    nugget.innerHTML = `<span>${pastParticiple}</span>`;
+                    nugget.dataset.pastParticiple = pastParticiple;
+                    
+                    nugget.style.left = `${positions[i].x}px`;
+                    nugget.style.top = `${positions[i].y}px`;
+                    
+                    // Add event listener for click
+                    nugget.addEventListener('click', () => {
+                        if (isGameRunning) {
+                            checkAnswer(nugget);
+                        }
+                    });
+                    
+                    mineField.appendChild(nugget);
+                }
+            });
+            
+            // Double check that the correct answer is always present on screen
+            const correctNuggetExists = Array.from(document.querySelectorAll('.gold-nugget'))
+                .some(n => n.dataset.pastParticiple === correctPastParticiple);
+            
+            if (!correctNuggetExists) {
+                console.log("Correct answer was missing, adding it now");
+                
+                // Add the correct answer if it's missing
+                const nugget = document.createElement('div');
+                nugget.className = 'gold-nugget';
+                nugget.innerHTML = `<span>${correctPastParticiple}</span>`;
+                nugget.dataset.pastParticiple = correctPastParticiple;
+                
+                // Find a position for it
+                const randomPosition = {
+                    x: Math.random() * (fieldWidth - 140),
+                    y: Math.random() * (fieldHeight - 70) + 60
+                };
+                
+                nugget.style.left = `${randomPosition.x}px`;
+                nugget.style.top = `${randomPosition.y}px`;
+                
+                // Add event listener for click
+                nugget.addEventListener('click', () => {
+                    if (isGameRunning) {
+                        checkAnswer(nugget);
+                    }
+                });
+                
+                mineField.appendChild(nugget);
+            }
+        }
+        
+        // Check if the clicked nugget has the correct past participle
+        function checkAnswer(nugget) {
+            const pastParticiple = nugget.dataset.pastParticiple;
+            totalCount++;
+            totalDisplay.textContent = totalCount;
+            
+            if (pastParticiple === correctPastParticiple) {
+                // Correct answer
+                nugget.classList.add('correct');
+                
+                // Add to score
+                score += 10 * level;
+                scoreDisplay.textContent = score;
+                
+                correctCount++;
+                correctDisplay.textContent = correctCount;
+                
+                // Create celebration effects
+                createCelebrationEffects();
+                
+                // Animate the mining action
+                mineNugget(nugget);
+                
+                // Set up a new round after animation
+                setTimeout(() => {
+                    setupRound();
+                }, 1000);
+            } else {
+                // Wrong answer
+                nugget.classList.add('wrong');
+                nugget.classList.add('shake');
+                
+                // Remove the shake class after animation
+                setTimeout(() => {
+                    nugget.classList.remove('shake');
+                    nugget.classList.remove('wrong');
+                }, 500);
+                
+                // Highlight the correct one briefly
+                const correctNugget = Array.from(document.querySelectorAll('.gold-nugget'))
+                    .find(n => n.dataset.pastParticiple === correctPastParticiple);
+                
+                if (correctNugget) {
+                    correctNugget.classList.add('correct');
+                    setTimeout(() => {
+                        correctNugget.classList.remove('correct');
+                    }, 800);
+                }
+            }
+        }
+        
+        // Animate the mining action
+        function mineNugget(nugget) {
+            const nuggetRect = nugget.getBoundingClientRect();
+            const minerRect = miner.getBoundingClientRect();
+            const mineFieldRect = mineField.getBoundingClientRect();
+            
+            // Calculate claw position
+            const clawX = nuggetRect.left + nuggetRect.width / 2 - mineFieldRect.left;
+            const clawY = nuggetRect.top + nuggetRect.height / 2 - mineFieldRect.top;
+            
+            // Extend claw to the nugget
+            const clawLength = Math.sqrt(
+                Math.pow(clawX - minerRect.left - minerRect.width / 2 + mineFieldRect.left, 2) +
+                Math.pow(clawY - minerRect.top + mineFieldRect.top, 2)
+            );
+            
+            claw.style.height = `${clawLength}px`;
+            
+            // Calculate angle
+            const angle = Math.atan2(
+                clawX - (minerRect.left + minerRect.width / 2 - mineFieldRect.left),
+                clawY - (minerRect.top - mineFieldRect.top)
+            ) * (180 / Math.PI);
+            
+            claw.style.transform = `rotate(${angle}deg)`;
+            
+            // After claw reaches the nugget
+            setTimeout(() => {
+                // Calculate grab animation
+                const grabX = (minerRect.left + minerRect.width / 2 - mineFieldRect.left) - clawX;
+                const grabY = (minerRect.top - mineFieldRect.top) - clawY;
+                
+                nugget.style.setProperty('--grabX', `${grabX}px`);
+                nugget.style.setProperty('--grabY', `${grabY}px`);
+                nugget.classList.add('grab');
+                
+                // Reset claw after animation
+                setTimeout(() => {
+                    claw.style.height = '0';
+                    claw.style.transform = 'rotate(0deg)';
+                }, 500);
+            }, 500);
+        }
+        
+        // Create celebration effects
+        function createCelebrationEffects() {
+            // Clear previous celebration
+            celebration.innerHTML = '';
+            
+            // Create confetti
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = `${Math.random() * 100}%`;
+                confetti.style.animationDuration = `${Math.random() * 2 + 1}s`;
+                confetti.style.background = `radial-gradient(circle, #B8860B, #D4AF37)`;
+                celebration.appendChild(confetti);
+            }
+            
+            // Create emojis
+            const emojis = ['🎉', '👏', '🎊', '✨', '🏆', '💰', '👑'];
+            for (let i = 0; i < 3; i++) {
+                const emoji = document.createElement('div');
+                emoji.className = 'emoji';
+                emoji.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+                emoji.style.left = `${Math.random() * 80 + 10}%`;
+                emoji.style.top = `${Math.random() * 80 + 10}%`;
+                emoji.style.fontSize = `${Math.random() * 1 + 3}rem`;
+                celebration.appendChild(emoji);
+            }
+            
+            // Remove effects after 2 seconds
+            setTimeout(() => {
+                celebration.innerHTML = '';
+            }, 2000);
+        }
+        
+        // Create sparkle effects throughout the game
+        function createSparkles() {
+            if (!isGameRunning) return;
+            
+            const sparkle = document.createElement('div');
+            sparkle.className = 'sparkle';
+            sparkle.style.left = `${Math.random() * 100}%`;
+            sparkle.style.top = `${Math.random() * 100}%`;
+            mineField.appendChild(sparkle);
+            
+            // Remove sparkle after animation
+            setTimeout(() => {
+                sparkle.remove();
+            }, 2000);
+            
+            // Create new sparkles periodically
+            setTimeout(createSparkles, Math.random() * 1000 + 500);
+        }
+        
+        // Level up - move to next set of verbs
+        function levelUp() {
+            level++;
+            levelDisplay.textContent = level;
+            currentVerbSetIndex = (currentVerbSetIndex + 1) % verbSets.length;
+            usedVerbsInCurrentSet = [];
+            timer += 20; // Add 20 seconds for each new level
+            timeDisplay.textContent = timer;
+            
+            // Create level up message
+            const levelUpMessage = document.createElement('div');
+            levelUpMessage.className = 'level-message';
+            levelUpMessage.innerHTML = `
+                <h2>🎖️ 恭喜升级! 🎖️</h2>
+                <p>你已经进入第 ${level} 级!</p>
+                <p>时间增加了 20 秒!</p>
+            `;
+            document.querySelector('.game-container').appendChild(levelUpMessage);
+            
+            // Remove message after 2 seconds
+            setTimeout(() => {
+                levelUpMessage.remove();
+                setupRound();
+            }, 2000);
+        }
+        
+        // Update game state every second
+        function updateGameState() {
+            if (!isGameRunning) return;
+            
+            timer--;
+            timeDisplay.textContent = timer;
+            
+            if (timer <= 0) {
+                endGame();
+            }
+        }
+        
+        // End the game
+        function endGame() {
+            isGameRunning = false;
+            clearInterval(gameInterval);
+            
+            // Create game over message
+            const gameOverMessage = document.createElement('div');
+            gameOverMessage.className = 'result-message';
+            gameOverMessage.innerHTML = `
+                <h2>游戏结束!</h2>
+                <p>你的最终得分: ${score}</p>
+                <p>你的正确率: ${correctCount}/${totalCount}</p>
+                <p>你的最终等级: ${level}</p>
+                <button class="game-btn" id="homeBtn">返回首页</button>
+                <button class="game-btn" id="playAgainBtn">再玩一次</button>
+            `;
+            document.querySelector('.game-container').appendChild(gameOverMessage);
+            
+            // Add event listeners to buttons
+            document.getElementById('homeBtn').addEventListener('click', () => {
+                gameOverMessage.remove();
+                resetGame();
+                showHomeScreen();
+            });
+            
+            document.getElementById('playAgainBtn').addEventListener('click', () => {
+                gameOverMessage.remove();
+                if (isCustomMode) {
+                    initializeCustomGame();
+                } else {
+                    initializeRandomGame();
+                }
+            });
+        }
+        
+        // Go to next group of 10 verbs without changing level
+        function nextGroup() {
+            if (!isGameRunning || isCustomMode) return;
+            
+            currentVerbSetIndex = (currentVerbSetIndex + 1) % verbSets.length;
+            usedVerbsInCurrentSet = [];
+            setupRound();
+        }
+        
+        // Reset game state
+        function resetGame() {
+            isGameRunning = false;
+            clearInterval(gameInterval);
+            clearGoldNuggets();
+        }
+        
+        // Show home screen
+        function showHomeScreen() {
+            homeScreen.style.display = 'flex';
+            customModeScreen.style.display = 'none';
+            startBtn.style.display = 'inline-block';
+            nextBtn.style.display = 'none';
+            resetBtn.style.display = 'none';
+        }
+        
+        // Parse custom verbs from textarea
+        function parseCustomVerbsFromText(text) {
+            const lines = text.trim().split('\n');
+            const verbs = [];
+            
+            for (const line of lines) {
+                const [base, pastParticiple] = line.split(',').map(item => item.trim());
+                if (base && pastParticiple) {
+                    verbs.push({ base, pastParticiple });
+                }
+            }
+            
+            return verbs;
+        }
+        
+        // Update preview table
+        function updatePreviewTable() {
+            previewTableBody.innerHTML = '';
+            
+            customVerbs.forEach((verb, index) => {
+                if (index < 10) { // Show first 10 entries only
+                    const row = document.createElement('tr');
+                    const baseCell = document.createElement('td');
+                    const pastParticipleCell = document.createElement('td');
+                    
+                    baseCell.textContent = verb.base;
+                    pastParticipleCell.textContent = verb.pastParticiple;
+                    
+                    row.appendChild(baseCell);
+                    row.appendChild(pastParticipleCell);
+                    previewTableBody.appendChild(row);
+                }
+            });
+            
+            if (customVerbs.length > 10) {
+                const row = document.createElement('tr');
+                const cell = document.createElement('td');
+                cell.colSpan = 2;
+                cell.textContent = `... 还有 ${customVerbs.length - 10} 个单词`;
+                cell.style.textAlign = 'center';
+                row.appendChild(cell);
+                previewTableBody.appendChild(row);
+            }
+        }
+        
+        // Event listeners
+        startBtn.addEventListener('click', initializeRandomGame);
+        nextBtn.addEventListener('click', nextGroup);
+        resetBtn.addEventListener('click', () => {
+            if (isCustomMode) {
+                initializeCustomGame();
+            } else {
+                initializeRandomGame();
+            }
+        });
+        
+        randomModeCard.querySelector('button').addEventListener('click', initializeRandomGame);
+        
+        customModeCard.addEventListener('click', () => {
+            homeScreen.style.display = 'none';
+            customModeScreen.style.display = 'flex';
+        });
+        
+        customModeBackBtn.addEventListener('click', showHomeScreen);
+        
+        manualInput.addEventListener('input', () => {
+            customVerbs = parseCustomVerbsFromText(manualInput.value);
+            updatePreviewTable();
+        });
+        
+        excelFileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file) {
+                fileStatus.textContent = `已选择: ${file.name}`;
+                
+                // This is a simplified approach - in a real app, you'd use a library like SheetJS to parse Excel
+                if (file.type === 'text/csv') {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const text = e.target.result;
+                        customVerbs = parseCustomVerbsFromText(text);
+                        updatePreviewTable();
+                    };
+                    reader.readAsText(file);
+                } else {
+                    fileStatus.textContent = '只支持CSV格式，请手动输入或转换为CSV';
+                }
+            }
+        });
+        
+        startCustomGameBtn.addEventListener('click', () => {
+            if (customVerbs.length < 5) {
+                alert("请至少添加5个不规则动词!");
+            } else {
+                initializeCustomGame();
+            }
+        });
+        
+        // Initialize some example verbs in the manual input
+        manualInput.value = "go,gone\nsee,seen\ntake,taken\nbe,been\ndo,done\nthink,thought\nsay,said\neat,eaten\nknow,known\ngive,given";
+        customVerbs = parseCustomVerbsFromText(manualInput.value);
+        updatePreviewTable();
+        
+        // Initialize with home screen
+        startBtn.style.display = 'inline-block';
+        nextBtn.style.display = 'none';
+        resetBtn.style.display = 'none';
+    </script>
+
+
+</body></html>
